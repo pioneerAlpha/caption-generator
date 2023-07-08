@@ -1,0 +1,3 @@
+Install all the dependencies: pip install -r .\requiremnets.txt
+For creating new virtual env: python -m venv venv
+For activating new virtual env: .\venv\Scripts\activate
