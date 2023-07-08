@@ -1,0 +1,6 @@
+*.ipynb
+*.mp3
+*.mp4
+*.srt
+venv
+outputs
