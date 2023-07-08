@@ -106,6 +106,7 @@ if ext == ".mp3" or ext == ".wav":
     os.remove(os.path.join(BASE_DIR, SUBTITLE))
     os.remove(os.path.join(BASE_DIR, VIDEO_WITH_ORIGINAL_AUDIO))
 
+    print("Freeing the GPU memory")
     if torch.cuda.is_available():
         torch.cuda.empty_cache()
 
