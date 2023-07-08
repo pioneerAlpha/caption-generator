@@ -106,6 +106,8 @@ if ext == ".mp3" or ext == ".wav":
     os.remove(os.path.join(BASE_DIR, SUBTITLE))
     os.remove(os.path.join(BASE_DIR, VIDEO_WITH_ORIGINAL_AUDIO))
 
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
 
 else:
     print("File is not valid")
