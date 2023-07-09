@@ -1,6 +1,5 @@
-*.ipynb
-*.mp3
-*.mp4
-*.srt
 venv
-outputs
+.env
+__pycache__
+others
+*.srt
