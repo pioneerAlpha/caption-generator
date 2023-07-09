@@ -108,7 +108,7 @@ def generate_video(audio_file: str):
     # f"ffmpeg -i {VIDEO_WITH_AUDIO} -c:v h264_nvenc -vf subtitles={SUBTITLE_DIR} {FINAL_VIDEO}"
 
     print("\nGenerating the final video")
-    os.system(f"ffmpeg -y -i {video_with_audio} -c:v h264_amf -vf subtitles={subtitle} {final_video}")
+    os.system(f"ffmpeg -y -i {video_with_audio} -c:v h264_nvenc -vf subtitles={subtitle} {final_video}")
     print("Done generating the final video")
 
 
