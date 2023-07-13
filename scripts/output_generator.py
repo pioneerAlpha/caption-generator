@@ -82,9 +82,9 @@ def generate_video(audio_file: str):
         audio = WAVE(audio_file)
 
     duration = int(audio.info.length) + 3
-    video_size = (1300, 700)
+    video_size = (1400, 800)
     output_video = os.path.dirname(__file__) + "/../videos/Blank.mp4"
-    fps=10
+    fps=15
     color=(255,255,255)
 
     print("\nGenerating blank video")
@@ -100,15 +100,14 @@ def generate_video(audio_file: str):
     final_clip = video_clip.set_audio(audio_clip)
     final_clip.write_videofile(video_with_audio)
     print("Done adding voice to the blank video")
-
-    final_video = os.path.dirname(__file__) + "/../outputs/Video_with_subtitle.mp4"
+    
+    audio_file_name = audio_file.split("\\")[-1]
+    audio_file_name = audio_file_name.split(".")[0].replace("%2B", "+")
+    final_video = os.path.dirname(__file__) + f"/../outputs/{audio_file_name}.mp4"
     subtitle = "Subtitle.srt"
 
-    #for nvidia
-    # f"ffmpeg -i {VIDEO_WITH_AUDIO} -c:v h264_nvenc -vf subtitles={SUBTITLE_DIR} {FINAL_VIDEO}"
-
     print("\nGenerating the final video")
-    os.system(f"ffmpeg -y -i {video_with_audio} -c:v h264_nvenc -vf subtitles={subtitle} {final_video}")
+    os.system(f"""ffmpeg -y -i {video_with_audio} -c:v h264_amf -vf "subtitles={subtitle}:force_style='MarginV=50,Fontsize=20'" {final_video}""")
     print("Done generating the final video")
 
 

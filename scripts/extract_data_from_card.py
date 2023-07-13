@@ -42,9 +42,13 @@ def get_first_card_from_list(query, list_id):
         url,
         params=query
     )
-    id = json.loads(response.text)[0]["id"]
-    name = json.loads(response.text)[0]["name"]
-    return id, name
+    
+    response_json = json.loads(response.text)
+    if len(response_json) == 0:
+        return None
+
+    id = response_json[0]["id"]
+    return id
 
 
 def get_attachments_from_card(query, card_id):
@@ -224,7 +228,12 @@ def main(model):
 
     if IN_list:
         IN_list_id = IN_list["id"]
-        IN_list_first_card_id, _ = get_first_card_from_list(query, IN_list_id)
+        IN_list_first_card_id = get_first_card_from_list(query, IN_list_id)
+
+        if IN_list_first_card_id is None:
+            print("\nDone generation.....")
+            return
+
         attachments = get_attachments_from_card(query, IN_list_first_card_id)
         validated_attachments = validate_attachments(attachments)
 
@@ -244,10 +253,14 @@ def main(model):
             move_card(query, Out_list_id, IN_list_first_card_id)
 
             try:
-                final_video = os.path.dirname(__file__) + "/../outputs/Video_with_subtitle.mp4"
-                print("\nDeleting the final video")
-                os.remove(final_video)
-                print("Done deleting the final video")
+                output_files = glob.glob(os.path.dirname(__file__) + "/../outputs/*")
+                output_files.extend(glob.glob(os.path.dirname(__file__) + "/../attachments/*"))
+                output_files.extend(glob.glob(os.path.dirname(__file__) + "/../videos/*"))
+                
+                print("\nDeleting the outputs")
+                for file in output_files:
+                    os.remove(file)
+                print("Done deleting the outputs")
             except Exception as e:
                 print(str(e))
 
@@ -255,7 +268,3 @@ def main(model):
             print("\nNo attachment found")
     else:
         print("\nNo IN list found")
-
-
-# if __name__ == "__main__":
-#     main()
